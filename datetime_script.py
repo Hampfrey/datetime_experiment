@@ -11,28 +11,93 @@ import datetime
 
 # Setup
 current = datetime.datetime.now()
+weekday = datetime.date.weekday(current)
 events_old = {
     "end of school": datetime.time(15, 30, 0),
     "school": datetime.time(8, 30, 0),
     "world end": datetime.datetime(2012, 12, 12, 12, 12, 12)
 }
-calendar = {
-    "monday": {
+
+# School day
+
+calendar = (
+    {
         "school": datetime.time(8, 30, 0),
         "period 1": datetime.time(8, 30, 0),
-        "period 1 ends": datetime.time(8, 30, 0),
-        "period 2": datetime.time(8, 30, 0),
-        "period 2 ends": datetime.time(8, 30, 0),
-        "lunch": datetime.time(8, 30, 0),
-        "lunch ends": datetime.time(8, 30, 0),
-        "period 3": datetime.time(8, 30, 0),
-        "period 3 ends": datetime.time(8, 30, 0),
-        "period 4": datetime.time(8, 30, 0),
+        "period 1 ends": datetime.time(10, 2, 0),
+        "period 2 ": datetime.time(10, 8, 0),
+        "period 2 ends": datetime.time(11, 40, 0),
+        "lunch": datetime.time(11, 40, 0),
+        "lunch ends": datetime.time(12, 14, 0),
+        "period 3": datetime.time(12, 20, 0),
+        "period 3 ends": datetime.time(13, 52, 0),
+        "period 4": datetime.time(13, 58, 0),
         "period 4 ends": datetime.time(15, 30, 0),
         "school ends": datetime.time(15, 30, 0)
-
+    },
+    {
+        "school": datetime.time(8, 30, 0),
+        "period 1": datetime.time(8, 30, 0),
+        "period 1 ends": datetime.time(9, 54, 0),
+        "period 2 ": datetime.time(10, 0, 0),
+        "period 2 ends": datetime.time(11, 24, 0),
+        "advisory": datetime.time(11, 30, 0),
+        "advisory ends": datetime.time(12, 00, 0),
+        "lunch": datetime.time(12, 00, 0),
+        "lunch ends": datetime.time(12, 30, 0),
+        "period 3": datetime.time(12, 36, 0),
+        "period 3 ends": datetime.time(14, 0, 0),
+        "period 4": datetime.time(14, 6, 0),
+        "period 4 ends": datetime.time(15, 30, 0),
+        "school ends": datetime.time(15, 30, 0)
+    },
+    {
+        "school": datetime.time(9, 0, 0),
+        "period 1": datetime.time(9, 0, 0),
+        "period 1 ends": datetime.time(10, 26, 0),
+        "period 2 ": datetime.time(10, 32, 0),
+        "period 2 ends": datetime.time(11, 58, 0),
+        "lunch": datetime.time(11, 58, 0),
+        "lunch ends": datetime.time(12, 28, 0),
+        "period 3": datetime.time(12, 34, 0),
+        "period 3 ends": datetime.time(13, 59, 0),
+        "period 4": datetime.time(14, 5, 0),
+        "period 4 ends": datetime.time(15, 30, 0),
+        "school ends": datetime.time(15, 30, 0)
+    },
+    {
+        "school": datetime.time(8, 30, 0),
+        "period 1": datetime.time(8, 30, 0),
+        "period 1 ends": datetime.time(9, 49, 0),
+        "period 2 ": datetime.time(9, 55, 0),
+        "period 2 ends": datetime.time(11, 14, 0),
+        "access": datetime.time(11, 20, 0),
+        "access ends": datetime.time(12, 5, 0),
+        "lunch": datetime.time(12, 5, 0),
+        "lunch ends": datetime.time(12, 40, 0),
+        "period 3": datetime.time(12, 46, 0),
+        "period 3 ends": datetime.time(14, 5, 0),
+        "period 4": datetime.time(14, 11, 0),
+        "period 4 ends": datetime.time(15, 30, 0),
+        "school ends": datetime.time(15, 30, 0)
+    },
+    {
+        "school": datetime.time(8, 30, 0),
+        "period 1": datetime.time(8, 30, 0),
+        "period 1 ends": datetime.time(9, 49, 0),
+        "period 2 ": datetime.time(9, 55, 0),
+        "period 2 ends": datetime.time(11, 14, 0),
+        "jag time": datetime.time(11, 20, 0),
+        "jag time ends": datetime.time(12, 5, 0),
+        "lunch": datetime.time(12, 5, 0),
+        "lunch ends": datetime.time(12, 40, 0),
+        "period 3": datetime.time(12, 46, 0),
+        "period 3 ends": datetime.time(14, 5, 0),
+        "period 4": datetime.time(14, 11, 0),
+        "period 4 ends": datetime.time(15, 30, 0),
+        "school ends": datetime.time(15, 30, 0)
     }
-}
+)
 locations = {
     "london": ""
 }
@@ -52,7 +117,7 @@ def main():
         option = command_input("\nWhat would you like to do?" + 
                                " Type LIST for options : ").lower()
         if option == "list":
-            print(events)
+            print("sry")
             print(locations)
         words = option.split()
         if "time" == words[0]:
@@ -68,9 +133,13 @@ def time_until(event):
     Args:
         event (str): The event in question
     """
-    if event == "end of school":
-        print("\nSchool ends at " + str(events["end of school"]))
-        #print(  "  - School will end in " + str(calculate_time_until(events["end of school"])))
+    if event in calendar[weekday]:
+        print()
+        print(event + " happens at " + str(calendar[weekday][event]))
+        timedelta = str(calculate_time_until(calendar[weekday][event]))[:6]
+
+        # CONVERT TIMEDELTA INTO HTNGS
+        print("Which is in " + timedelta)
     else:
         print("\nInvalid event")
 
@@ -136,7 +205,7 @@ def calculate_time_until(time_or_datetime):
         time_dif = str(get_now_time_difference(time))
         if time_dif[0] == "-":
             time_dif = time_dif[8:]
-        print(time_dif)
+        return time_dif
 
 def time_in(location):
     """
@@ -208,8 +277,6 @@ def command_input(prompt = "", process = 0):
             return return_bool
         
 if __name__ == '__main__':
-    calculate_time_until(events["school"])
-    command_input()
-    calculate_time_until(events["end of school"])
-    command_input()
+    print(calendar[0]["lunch"])
+    print(calendar[0]["period 1"])
     main()
