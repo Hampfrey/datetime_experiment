@@ -1,5 +1,5 @@
 """
-NAME
+Datetime
 
 This code
 
@@ -11,16 +11,33 @@ import datetime
 
 # Setup
 current = datetime.datetime.now()
-events = {
-    "end of school": datetime.datetime(2024, 3, 6, 15, 30, 0)
-    
+events_old = {
+    "end of school": datetime.time(15, 30, 0),
+    "school": datetime.time(8, 30, 0),
+    "world end": datetime.datetime(2012, 12, 12, 12, 12, 12)
+}
+calendar = {
+    "monday": {
+        "school": datetime.time(8, 30, 0),
+        "period 1": datetime.time(8, 30, 0),
+        "period 1 ends": datetime.time(8, 30, 0),
+        "period 2": datetime.time(8, 30, 0),
+        "period 2 ends": datetime.time(8, 30, 0),
+        "lunch": datetime.time(8, 30, 0),
+        "lunch ends": datetime.time(8, 30, 0),
+        "period 3": datetime.time(8, 30, 0),
+        "period 3 ends": datetime.time(8, 30, 0),
+        "period 4": datetime.time(8, 30, 0),
+        "period 4 ends": datetime.time(15, 30, 0),
+        "school ends": datetime.time(15, 30, 0)
+
+    }
 }
 locations = {
     "london": ""
 }
 
 # List
-
 def main():
     """
     Introduce the user and start up the loop
@@ -46,13 +63,10 @@ def main():
     
 def time_until(event):
     """
-    SUMMARY
+    Look through the events dictionary and print the selected deats
     
     Args:
-        event (str): 
-    
-    Return:
-        time (idk): 
+        event (str): The event in question
     """
     if event == "end of school":
         print("\nSchool ends at " + str(events["end of school"]))
@@ -60,19 +74,76 @@ def time_until(event):
     else:
         print("\nInvalid event")
 
-def calculate_time_until(time):
-    return_time = time - current.time()
-    return return_time
+def get_now_time_difference(time):
+    """
+    This function subtracts a time from now
+    
+    Args:
+        time (time): The time to check
+    
+    Return:
+        time_dif (timedelta): The time difference
+    """
+    time_str = str(time)
+    current_str = str(current)
+    current_date_str = current_str[:11]
+    time_dif = cast_str_into_datetime(current_date_str + time_str) - current
+    return(time_dif)
+
+def cast_str_into_datetime(string):
+    """
+    This function subtracts a time from now
+    
+    Args:
+        string (str): A datetime converted into a string in standard format
+    
+    Return:
+        (datetime): The string now in datetime format
+    """
+    # this is horrific
+    datetime_str = ""
+    for x in string:
+        if x != "-" and x != ":":
+            datetime_str += x
+        else:
+            datetime_str += " "
+    datetime_split = datetime_str.split()
+    year = int(datetime_split[0])
+    month = int(datetime_split[1])
+    day = int(datetime_split[2])
+    hour = int(datetime_split[3])
+    minute = int(datetime_split[4])
+    second = int(datetime_split[5])
+    return datetime.datetime(year, month, day, hour, minute, second)
+
+def calculate_time_until(time_or_datetime):
+    """
+    This function finds the time until an event
+    
+    Args:
+        time_or_datetime (time or datetime): The time of an event or an event's 
+        datetime
+    
+    Return:
+        time_dif (str): The time until it, accounting for day difference
+    """
+    if False: 
+        # Datetimes
+        "woo"
+    else:
+        # Times
+        time = time_or_datetime
+        time_dif = str(get_now_time_difference(time))
+        if time_dif[0] == "-":
+            time_dif = time_dif[8:]
+        print(time_dif)
 
 def time_in(location):
     """
-    SUMMARY
-    
+    Look through the location dictionary and print its timezone stuff
+
     Args:
-        location (str): 
-    
-    Return:
-        time (idk): 
+        location (str): The location in question
     """
     print("\nlocation was " + location + " ")
 
@@ -137,4 +208,8 @@ def command_input(prompt = "", process = 0):
             return return_bool
         
 if __name__ == '__main__':
+    calculate_time_until(events["school"])
+    command_input()
+    calculate_time_until(events["end of school"])
+    command_input()
     main()
