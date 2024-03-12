@@ -12,20 +12,15 @@ import datetime
 # Setup
 current = datetime.datetime.now()
 weekday = datetime.date.weekday(current)
-events_old = {
-    "end of school": datetime.time(15, 30, 0),
-    "school": datetime.time(8, 30, 0),
-    "world end": datetime.datetime(2012, 12, 12, 12, 12, 12)
-}
 
 # School day
-
 calendar = (
     {
+        # Monday
         "school": datetime.time(8, 30, 0),
         "period 1": datetime.time(8, 30, 0),
         "period 1 ends": datetime.time(10, 2, 0),
-        "period 2 ": datetime.time(10, 8, 0),
+        "period 2": datetime.time(10, 8, 0),
         "period 2 ends": datetime.time(11, 40, 0),
         "lunch": datetime.time(11, 40, 0),
         "lunch ends": datetime.time(12, 14, 0),
@@ -36,10 +31,11 @@ calendar = (
         "school ends": datetime.time(15, 30, 0)
     },
     {
+        # Tuesday
         "school": datetime.time(8, 30, 0),
         "period 1": datetime.time(8, 30, 0),
         "period 1 ends": datetime.time(9, 54, 0),
-        "period 2 ": datetime.time(10, 0, 0),
+        "period 2": datetime.time(10, 0, 0),
         "period 2 ends": datetime.time(11, 24, 0),
         "advisory": datetime.time(11, 30, 0),
         "advisory ends": datetime.time(12, 00, 0),
@@ -52,10 +48,11 @@ calendar = (
         "school ends": datetime.time(15, 30, 0)
     },
     {
+        # Wednesday
         "school": datetime.time(9, 0, 0),
         "period 1": datetime.time(9, 0, 0),
         "period 1 ends": datetime.time(10, 26, 0),
-        "period 2 ": datetime.time(10, 32, 0),
+        "period 2": datetime.time(10, 32, 0),
         "period 2 ends": datetime.time(11, 58, 0),
         "lunch": datetime.time(11, 58, 0),
         "lunch ends": datetime.time(12, 28, 0),
@@ -66,10 +63,11 @@ calendar = (
         "school ends": datetime.time(15, 30, 0)
     },
     {
+        # Thursday
         "school": datetime.time(8, 30, 0),
         "period 1": datetime.time(8, 30, 0),
         "period 1 ends": datetime.time(9, 49, 0),
-        "period 2 ": datetime.time(9, 55, 0),
+        "period 2": datetime.time(9, 55, 0),
         "period 2 ends": datetime.time(11, 14, 0),
         "access": datetime.time(11, 20, 0),
         "access ends": datetime.time(12, 5, 0),
@@ -82,10 +80,11 @@ calendar = (
         "school ends": datetime.time(15, 30, 0)
     },
     {
+        # Friday
         "school": datetime.time(8, 30, 0),
         "period 1": datetime.time(8, 30, 0),
         "period 1 ends": datetime.time(9, 49, 0),
-        "period 2 ": datetime.time(9, 55, 0),
+        "period 2": datetime.time(9, 55, 0),
         "period 2 ends": datetime.time(11, 14, 0),
         "jag time": datetime.time(11, 20, 0),
         "jag time ends": datetime.time(12, 5, 0),
@@ -96,7 +95,23 @@ calendar = (
         "period 4": datetime.time(14, 11, 0),
         "period 4 ends": datetime.time(15, 30, 0),
         "school ends": datetime.time(15, 30, 0)
+    },
+    {
+        # Saturday
+    },
+    {
+        # Sunday
+    },
+    {
+        # Unassigned
+        "4:97": datetime.time(17, 37, 0),
+        "noon": datetime.time(12, 0, 0),
+        "world end p2": datetime.datetime(2024, 12, 12, 12, 12, 12),
+        "world end": datetime.datetime(2012, 12, 12, 12, 12, 12),
+        "tf2 heavy update": datetime.datetime(9999, 6, 5, 12, 13, 9),
+        "half-life release": datetime.datetime(1998, 11, 19, 0, 0, 0)
     }
+    
 )
 locations = {
     "london": ""
@@ -109,22 +124,31 @@ def main():
     """
     print("\nWelcome to \"Datetime Calculator\"" +
           "\n  - Type LIST to print a list of all options" +
-          "\n  - Enter requests like \"time in london\"" +
-          "\n  - Enter EXIT at any time to leave. ")
+          "\n  - Current options are \"time until ____\" and" +
+          "\n    \"time in ____\"" +
+          "\n  - Enter EXIT at any time to leave ")
     
     # While loop
     while(True):
         option = command_input("\nWhat would you like to do?" + 
                                " Type LIST for options : ").lower()
         if option == "list":
-            print("sry")
-            print(locations)
-        words = option.split()
-        if "time" == words[0]:
-            if "until" == words[1]:
-                time_until(option[11:])
-            elif "in" == words[1]:
-                time_in(option[8:])
+            print("\nTIME UNTIL, Weekday Events")
+            for key, value in calendar[weekday].items():
+                print("    " + key, ":", value)
+            print("TIME UNTIL, Global Events")
+            for key, value in calendar[7].items():
+                print("    " + key, ":", value)
+            print("TIME IN, Locations")
+            for key, value in locations.items():
+                print("    " + key, ":", value)
+        if option != "":
+            words = option.split()
+            if "time" == words[0]:
+                if "until" == words[1]:
+                    time_until(option[11:])
+                elif "in" == words[1]:
+                    time_in(option[8:])
     
 def time_until(event):
     """
@@ -134,12 +158,36 @@ def time_until(event):
         event (str): The event in question
     """
     if event in calendar[weekday]:
-        print()
-        print(event + " happens at " + str(calendar[weekday][event]))
-        timedelta = str(calculate_time_until(calendar[weekday][event]))[:6]
 
-        # CONVERT TIMEDELTA INTO HTNGS
-        print("Which is in " + timedelta)
+        # Weekday based events
+        print()
+        print(capitalize(event + " happens at " + 
+                         str(calendar[weekday][event])))
+        timedelta = str(calculate_time_until(calendar[weekday][event]))
+        timedelta = timedelta.split(":")
+        print("Which is in " + timedelta[0] + " hours, " + timedelta[1] + 
+              " minutes, and " + timedelta[2] + " seconds")
+    elif event in calendar[7]:
+
+        # Unassigned events
+        print()
+        if type(calendar[7][event]) == type(current):
+
+            # Datetimes
+            print(capitalize(event + " happens on " + str(calendar[7][event])))
+            timedelta = str(calculate_time_until(calendar[7][event]))
+            timedelta = timedelta.split(", ")
+            time = timedelta[1].split(":")
+            print("Which is in " + timedelta[0] + ", " + time[0] + " hours, " + 
+                  time[1] + " minutes, and " + time[2] + " seconds")
+        else:
+
+            # Times
+            print(capitalize(event + " happens at " + str(calendar[7][event])))
+            timedelta = str(calculate_time_until(calendar[7][event]))
+            timedelta = timedelta.split(":")
+            print("Which is in " + timedelta[0] + " hours, " + timedelta[1] + 
+                  " minutes, and " + timedelta[2] + " seconds")
     else:
         print("\nInvalid event")
 
@@ -153,6 +201,7 @@ def get_now_time_difference(time):
     Return:
         time_dif (timedelta): The time difference
     """
+    current = datetime.datetime.now()
     time_str = str(time)
     current_str = str(current)
     current_date_str = current_str[:11]
@@ -196,9 +245,10 @@ def calculate_time_until(time_or_datetime):
     Return:
         time_dif (str): The time until it, accounting for day difference
     """
-    if False: 
+    if type(time_or_datetime) == type(current): 
         # Datetimes
-        "woo"
+        timedate = time_or_datetime
+        return timedate - current
     else:
         # Times
         time = time_or_datetime
@@ -215,6 +265,19 @@ def time_in(location):
         location (str): The location in question
     """
     print("\nlocation was " + location + " ")
+
+def capitalize(string):
+    """
+    This function capitalizes the first letter of a string
+    
+    Args:
+        string (str): The string
+    
+    Return:
+        (str): The string with a capital first letter
+    """
+    return string[0].upper() + string[1:]
+    
 
 def command_input(prompt = "", process = 0):
     """
@@ -259,10 +322,8 @@ def command_input(prompt = "", process = 0):
             else:
                 if bool_input == "y" or bool_input in true_words:
                     return True
-                    break
                 if bool_input == "n" or bool_input in false_words:
                     return False
-                    break
                 input("\nFailed bool_mode input, please use Y or N ")
     elif process == 2:
         # Bool mode passthrough
@@ -277,6 +338,4 @@ def command_input(prompt = "", process = 0):
             return return_bool
         
 if __name__ == '__main__':
-    print(calendar[0]["lunch"])
-    print(calendar[0]["period 1"])
     main()
