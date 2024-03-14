@@ -1,10 +1,21 @@
 """
 Datetime
 
-This code
+This code does things with datetime
 
 This code contains the following functions:
-  * funct(var), description
+  * main(), introduces the program and starts the loop
+  * time_until(str), looks through the event dictionary and prints details
+  * get_now_time_difference(time), gets the difference between local time and
+    the given
+  * cast_str_into_datetime(str), turns a datetime in string format into a 
+    datetime
+  * calculate_time_until(time or datetime), calculates the time until/differnce 
+    of the inputed
+  * time_in(), TO BE IMPLEMENTED
+  * capitalize(str), capitalizes the first character of a string
+  * command_input(str = "", process = 1), call for an input while 
+    allowing EXIT whenever
 """
 # Imports
 import datetime
@@ -114,7 +125,12 @@ calendar = (
     
 )
 locations = {
-    "london": ""
+    "london": "datetime.datetime.now(timezone.utc)",
+    "tokyo": "",
+    "bejing": "",
+    "munich": "",
+    "moon": "",
+    "south pole": ""
 }
 
 # List
@@ -147,6 +163,8 @@ def main():
             if "time" == words[0]:
                 if "until" == words[1]:
                     time_until(option[11:])
+                elif "since" == words[1]:
+                    time_until(option[11:], True)
                 elif "in" == words[1]:
                     time_in(option[8:])
     
@@ -162,11 +180,11 @@ def time_until(event):
         # Weekday based events
         print()
         print(capitalize(event + " happens at " + 
-                         str(calendar[weekday][event])))
+                        str(calendar[weekday][event])))
         timedelta = str(calculate_time_until(calendar[weekday][event]))
         timedelta = timedelta.split(":")
         print("Which is in " + timedelta[0] + " hours, " + timedelta[1] + 
-              " minutes, and " + timedelta[2] + " seconds")
+                " minutes, and " + timedelta[2] + " seconds")
     elif event in calendar[7]:
 
         # Unassigned events
@@ -174,20 +192,23 @@ def time_until(event):
         if type(calendar[7][event]) == type(current):
 
             # Datetimes
-            print(capitalize(event + " happens on " + str(calendar[7][event])))
+            print(capitalize(event + " happens on " + 
+                    str(calendar[7][event])))
             timedelta = str(calculate_time_until(calendar[7][event]))
             timedelta = timedelta.split(", ")
             time = timedelta[1].split(":")
-            print("Which is in " + timedelta[0] + ", " + time[0] + " hours, " + 
-                  time[1] + " minutes, and " + time[2] + " seconds")
+            print("Which is in " + timedelta[0] + ", " + time[0] + 
+                    " hours, " + time[1] + " minutes, and " + time[2] + 
+                    " seconds")
         else:
 
             # Times
-            print(capitalize(event + " happens at " + str(calendar[7][event])))
+            print(capitalize(event + " happens at " + 
+                    str(calendar[7][event])))
             timedelta = str(calculate_time_until(calendar[7][event]))
             timedelta = timedelta.split(":")
-            print("Which is in " + timedelta[0] + " hours, " + timedelta[1] + 
-                  " minutes, and " + timedelta[2] + " seconds")
+            print("Which is in " + timedelta[0] + " hours, " + timedelta[1] 
+                    + " minutes, and " + timedelta[2] + " seconds")
     else:
         print("\nInvalid event")
 
