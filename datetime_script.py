@@ -18,13 +18,14 @@ This code contains the following functions:
     allowing EXIT whenever
 """
 # Imports
-import datetime
+import datetime 
+from dateutil import tz
 
 # Setup
-current = datetime.datetime.now()
+current = datetime.datetime.now(tz=tz.tzlocal())
 weekday = datetime.date.weekday(current)
 
-# School day
+# Time Until
 calendar = (
     {
         # Monday
@@ -104,7 +105,7 @@ calendar = (
         "period 3": datetime.time(12, 46, 0),
         "period 3 ends": datetime.time(14, 5, 0),
         "period 4": datetime.time(14, 11, 0),
-        "period 4 ends": datetime.time(15, 30, 0),
+        "period 4 ends": datetime.time(15, 30, 0), 
         "school ends": datetime.time(15, 30, 0)
     },
     {
@@ -122,15 +123,15 @@ calendar = (
         "tf2 heavy update": datetime.datetime(9999, 6, 5, 12, 13, 9),
         "half-life release": datetime.datetime(1998, 11, 19, 0, 0, 0)
     }
-    
 )
+# Time In
 locations = {
-    "london": "datetime.datetime.now(timezone.utc)",
-    "tokyo": "",
-    "bejing": "",
-    "munich": "",
-    "moon": "",
-    "south pole": ""
+    "london": datetime.datetime.now(tz=tz.gettz("Europe/London")),
+    "tokyo": datetime.datetime.now(tz=tz.gettz("Asia/Tokyo")),
+    "bejing": datetime.datetime.now(tz=tz.gettz("Asia/Shanghai")),
+    "munich": datetime.datetime.now(tz=tz.gettz("Europe/Berlin")),
+    "moon": datetime.datetime.now(tz=tz.UTC),
+    "south pole": datetime.datetime.now(tz=tz.gettz("Etc/GMT+12"))
 }
 
 # List
@@ -163,9 +164,7 @@ def main():
             if "time" == words[0]:
                 if "until" == words[1]:
                     time_until(option[11:])
-                elif "since" == words[1]:
-                    time_until(option[11:], True)
-                elif "in" == words[1]:
+                elif "in" == words[1] or "at" == words[1] or "on" == words[1]:
                     time_in(option[8:])
     
 def time_until(event):
@@ -285,7 +284,12 @@ def time_in(location):
     Args:
         location (str): The location in question
     """
-    print("\nlocation was " + location + " ")
+    if location in locations:
+        location_str = str(locations[location])
+        print("\nThe time in " + location + " is " + location_str[11:19])
+        print("It's timezone is " + locations[location].tzname())
+    else:
+        print("\nInvaild Location")
 
 def capitalize(string):
     """
@@ -345,7 +349,7 @@ def command_input(prompt = "", process = 0):
                     return True
                 if bool_input == "n" or bool_input in false_words:
                     return False
-                input("\nFailed bool_mode input, please use Y or N ")
+                print("\nFailed bool_mode input, please use Y or N ")
     elif process == 2:
         # Bool mode passthrough
         bool_input = input(prompt).lower()
