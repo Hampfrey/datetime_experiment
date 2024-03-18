@@ -5,14 +5,14 @@ This code does things with datetime
 
 This code contains the following functions:
   * main(), introduces the program and starts the loop
-  * time_until(str), looks through the event dictionary and prints details
+  * time_until(str), looks through the calendar dictionary and prints details
   * get_now_time_difference(time), gets the difference between local time and
     the given
   * cast_str_into_datetime(str), turns a datetime in string format into a 
     datetime
   * calculate_time_until(time or datetime), calculates the time until/differnce 
     of the inputed
-  * time_in(), TO BE IMPLEMENTED
+  * time_in(), looks through the locations dictionary and prints details
   * capitalize(str), capitalizes the first character of a string
   * command_input(str = "", process = 1), call for an input while 
     allowing EXIT whenever
