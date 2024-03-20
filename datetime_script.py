@@ -22,7 +22,8 @@ import datetime
 from dateutil import tz
 
 # Setup
-current = datetime.datetime.now(tz=tz.tzlocal())
+current = datetime.datetime.now()
+current_timezone = datetime.datetime.now(tz=tz.tzlocal())
 weekday = datetime.date.weekday(current)
 
 # Time Until
@@ -162,7 +163,7 @@ def main():
         if option != "":
             words = option.split()
             if "time" == words[0]:
-                if "until" == words[1]:
+                if "until" == words[1] or "since" == words[1]:
                     time_until(option[11:])
                 elif "in" == words[1] or "at" == words[1] or "on" == words[1]:
                     time_in(option[8:])
@@ -193,12 +194,20 @@ def time_until(event):
             # Datetimes
             print(capitalize(event + " happens on " + 
                     str(calendar[7][event])))
-            timedelta = str(calculate_time_until(calendar[7][event]))
-            timedelta = timedelta.split(", ")
-            time = timedelta[1].split(":")
-            print("Which is in " + timedelta[0] + ", " + time[0] + 
-                    " hours, " + time[1] + " minutes, and " + time[2] + 
-                    " seconds")
+            timedelta_list = calculate_time_until(calendar[7][event])
+            if timedelta_list[1]: # Time until
+                timedelta = str(timedelta_list[0]).split(", ")
+                time = timedelta[1].split(":")
+                print("Which is in " + timedelta[0] + ", " + time[0] + 
+                        " hours, " + time[1] + " minutes, and " + time[2] + 
+                        " seconds")
+            else: # Time since
+                timedelta = str(timedelta_list[0]).split(", ")
+                time = timedelta[1].split(":")
+                print("Which happened " + timedelta[0] + ", " + time[0] + 
+                        " hours, " + time[1] + " minutes, and " + time[2] + 
+                        " seconds ago")
+                
         else:
 
             # Times
@@ -263,12 +272,19 @@ def calculate_time_until(time_or_datetime):
         datetime
     
     Return:
-        time_dif (str): The time until it, accounting for day difference
+        time_dif (timedelta): The time until it, accounting for day difference
+        (list): A mixed list containing the dif in [0] and whether or not it is 
+        before or after the now in [1]. I am aware this horrible coding but the 
+        alternative seems worse
     """
     if type(time_or_datetime) == type(current): 
         # Datetimes
         timedate = time_or_datetime
-        return timedate - current
+        if str(timedate - current)[0] == "-":
+            return (current - timedate, False)
+        else:
+            return (timedate - current, True)
+        
     else:
         # Times
         time = time_or_datetime
