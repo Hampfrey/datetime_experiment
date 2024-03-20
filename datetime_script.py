@@ -14,7 +14,7 @@ This code contains the following functions:
     of the inputed
   * time_in(), looks through the locations dictionary and prints details
   * capitalize(str), capitalizes the first character of a string
-  * command_input(str = "", process = 1), call for an input while 
+  * command_input(str = "", process = 0), call for an input while 
     allowing EXIT whenever
 """
 # Imports
@@ -305,7 +305,7 @@ def time_in(location):
         print("\nThe time in " + location + " is " + location_str[11:19])
         print("It's timezone is " + locations[location].tzname())
     else:
-        print("\nInvaild Location")
+        print("\nInvaild location")
 
 def capitalize(string):
     """
