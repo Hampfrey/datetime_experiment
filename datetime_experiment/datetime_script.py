@@ -265,7 +265,7 @@ def cast_str_into_datetime(string: str) -> datetime.datetime:
     return datetime.datetime(year, month, day, hour, minute, second)
 
 def calculate_time_until(time_or_datetime: Union[datetime.time, 
-                                                 datetime.datetime]) -> Union[datetime.timedelta, list]:
+                         datetime.datetime]) -> Union[datetime.timedelta, list]:
     """
     This function finds the time until an event
     
@@ -295,7 +295,7 @@ def calculate_time_until(time_or_datetime: Union[datetime.time,
             time_dif = time_dif[8:]
         return time_dif
 
-def time_in(location):
+def time_in(location: str):
     """
     Look through the location dictionary and print its timezone deatails
 
@@ -309,7 +309,7 @@ def time_in(location):
     else:
         print("\nInvaild location")
 
-def capitalize(string):
+def capitalize(string: str):
     """
     This function capitalizes the first letter of a string
     
@@ -321,7 +321,6 @@ def capitalize(string):
     """
     return string[0].upper() + string[1:]
     
-
 def command_input(prompt = "", process = 0):
     """
     A simple function that allows the user to input values while having access 
